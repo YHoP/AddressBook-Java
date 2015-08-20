@@ -8,8 +8,9 @@ public class Address {
 
   public Address(String addressType, String street, String city, String state, String zip) {
       mAddressType = addressType;
-      mAStreet = street;
+      mStreet = street;
       mCity = city;
+      mState = state;
       mZip = zip;
       instances.add(this);
       mId = instances.size();

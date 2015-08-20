@@ -11,7 +11,7 @@ public class Contact {
   private ArrayList<Address> mAddress;
 
   public Contact(String firstName, String lastName) {
-    mFirstName = firstname;
+    mFirstName = firstName;
     mLastName = lastName;
     instances.add(this);
     mId = instances.size();

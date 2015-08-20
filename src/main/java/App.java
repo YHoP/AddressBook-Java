@@ -17,7 +17,7 @@ public class App {
 
   get("/phone", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
-    model.put("phone", Task.all());
+    model.put("phone", Phone.all());
     model.put("template", "templates/phone.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
@@ -31,7 +31,7 @@ public class App {
   get("/phone/:id", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
 
-    Task task = Task.find(Integer.parseInt(request.params(":id")));
+    Phone task = Phone.find(Integer.parseInt(request.params(":id")));
     model.put("task", task);
     model.put("template", "templates/task.vtl");
     return new ModelAndView(model, layout);
@@ -52,8 +52,9 @@ public class App {
 
   post("/contactList", (request, response) ->{
     HashMap<String, Object> model = new HashMap<String, Object>();
-    String name = request.queryParams("name");
-    Contact newContact = new Contact(name);
+    String firstName = request.queryParams("firstName");
+    String lastName = request.queryParams("lastName");
+    Contact newContact = new Contact(firstName,lastName);
     model.put("contact", newContact);
     model.put("template", "templates/success.vtl");
     return new ModelAndView(model, layout);
@@ -72,7 +73,7 @@ public class App {
   get("contactList/:id/phone/new", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
     Contact contact = Contact.find(Integer.parseInt(request.params(":id")));
-    ArrayList<Phone> phone = contact.getphone();
+    ArrayList<Phone> phone = contact.getPhone();
     model.put("contact", contact);
     model.put("phone", phone);
     model.put("template", "templates/contact-phone-form.vtl");
@@ -127,9 +128,9 @@ public class App {
     }
 
     String emailType = request.queryParams("emailType");
-    String email = request.queryParams("email");
+    String emailAddress = request.queryParams("emailAddress");
 
-    Email newEmail = new Email(emailType, email);
+    Email newEmail = new Email(emailType, emailAddress);
 
     email.add(newEmail);
 
@@ -138,10 +139,6 @@ public class App {
     model.put("template", "templates/contact.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
-
-
-
-
 
   get("contactList/:id/address/new", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
@@ -170,7 +167,7 @@ public class App {
     String state = request.queryParams("state");
     String zip = request.queryParams("zip");
 
-    Address newAddress = new Address(emailType, street, city, state, zip);
+    Address newAddress = new Address(addressType, street, city, state, zip);
 
     address.add(newAddress);
 
