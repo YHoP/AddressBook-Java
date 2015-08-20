@@ -1,0 +1,27 @@
+<h3>Add an address to $contact.getFirstName() $contact.getLastName()</h3>
+
+<form action="/address" method="post" class="form-inline">
+  <input id="contactId" name="contactId" type="hidden" value="$contact.getId()">
+
+  <div class="form-group">
+    <label for="addressType">Type</label>
+    <input id="addressType" name="addressType" type="text" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="Street">Street</label>
+    <input id="Street" name="Street" type="text" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="city">city</label>
+    <input id="city" name="city" type="text" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="state">state</label>
+    <input id="state" name="state" type="text" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="zip">Zip code</label>
+    <input id="zip" name="zip" type="number" min="5" max="10" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-success">Add address</button>
+</form>

@@ -1,0 +1,19 @@
+<h3>Add a phone number to $contact.getFirstName() $contact.getLastName()</h3>
+
+<form action="/phone" method="post" class="form-inline">
+  <input id="contactId" name="contactId" type="hidden" value="$contact.getId()">
+
+  <div class="form-group">
+    <label for="phoneType">Type</label>
+    <input id="phoneType" name="phoneType" type="text" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="areaCode">Type</label>
+    <input id="areaCode" name="areaCode" type="number" min="3" max="3" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="phoneNum">Type</label>
+    <input id="phoneNum" name="phoneNum" type="number" min="7" max="7" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-success">Add phone</button>
+</form>

@@ -1,0 +1,10 @@
+<h1>Contacts</h1>
+
+#foreach($contact in $contactList)
+ <h4><a href="/contactList/$contact.getId()">$contact.getFirstName()  $contact.getLastName()</a></h4><br>
+#end
+
+<br>
+<a href="/contactList/new">Add a new contact</a>
+<br>
+<a href="/contactList">View all contact list</a><br>

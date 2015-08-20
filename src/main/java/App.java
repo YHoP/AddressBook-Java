@@ -11,26 +11,24 @@ public class App {
 
   get("/", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
-    model.put("tasks", request.session().attribute("tasks"));
-
     model.put("template", "templates/index.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  get("/tasks", (request, response) -> {
+  get("/phone", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
-    model.put("tasks", Task.all());
-    model.put("template", "templates/tasks.vtl");
+    model.put("phone", Task.all());
+    model.put("template", "templates/phone.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  get("tasks/new", (request, response) -> {
+  get("phone/new", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
     model.put("template", "templates/task-form.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  get("/tasks/:id", (request, response) -> {
+  get("/phone/:id", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
 
     Task task = Task.find(Integer.parseInt(request.params(":id")));
@@ -39,79 +37,142 @@ public class App {
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  get("/categories", (request, response) -> {
+  get("/contactList", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
-    model.put("categories", Category.all());
-    model.put("template", "templates/categories.vtl");
+    model.put("contactList", Contact.all());
+    model.put("template", "templates/contactList.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  get("categories/new", (request, response) -> {
+  get("contactList/new", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
-    model.put("template", "templates/category-form.vtl");
+    model.put("template", "templates/contact-form.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  post("/categories", (request, response) ->{
+  post("/contactList", (request, response) ->{
     HashMap<String, Object> model = new HashMap<String, Object>();
     String name = request.queryParams("name");
-    Category newCategory = new Category(name);
-    model.put("category", newCategory);
+    Contact newContact = new Contact(name);
+    model.put("contact", newContact);
     model.put("template", "templates/success.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  get("/categories/:id", (request, response) -> {
+  get("/contactList/:id", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
 
-    Category category = Category.find(Integer.parseInt(request.params(":id")));
-    model.put("category", category);
+    Contact contact = Contact.find(Integer.parseInt(request.params(":id")));
+    model.put("contact", contact);
 
-    model.put("template", "templates/category.vtl");
+    model.put("template", "templates/contact.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  get("categories/:id/tasks/new", (request, response) -> {
+  get("contactList/:id/phone/new", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
-    Category category = Category.find(Integer.parseInt(request.params(":id")));
-    ArrayList<Task> tasks = category.getTasks();
-    model.put("category", category);
-    model.put("tasks", tasks);
-    model.put("template", "templates/category-tasks-form.vtl");
+    Contact contact = Contact.find(Integer.parseInt(request.params(":id")));
+    ArrayList<Phone> phone = contact.getphone();
+    model.put("contact", contact);
+    model.put("phone", phone);
+    model.put("template", "templates/contact-phone-form.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  post("/tasks", (request, response) -> {
+  post("/phone", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
 
-    Category category = Category.find(Integer.parseInt(request.queryParams("categoryId")));
+    Contact contact = Contact.find(Integer.parseInt(request.queryParams("contactId")));
     //System.out.println("x");
-    ArrayList<Task> tasks = category.getTasks();
+    ArrayList<Phone> phone = contact.getPhone();
 
-    if (tasks == null) {
-      tasks = new ArrayList<Task>();
-      request.session().attribute("tasks", tasks);
+    if (phone == null) {
+      phone = new ArrayList<Phone>();
+      request.session().attribute("phone", phone);
     }
 
-    String description = request.queryParams("description");
-    Task newTask = new Task(description);
+    String phoneType = request.queryParams("phoneType");
+    String areaCode = request.queryParams("areaCode");
+    String phoneNum = request.queryParams("phoneNum");
+    Phone newPhone = new Phone(phoneType, areaCode, phoneNum);
 
-    tasks.add(newTask);
+    phone.add(newPhone);
 
-    model.put("tasks", tasks);
-    model.put("category", category);
-    model.put("template", "templates/category.vtl");
+    model.put("phone", phone);
+    model.put("contact", contact);
+    model.put("template", "templates/contact.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
+  get("contactList/:id/email/new", (request, response) -> {
+    HashMap<String, Object> model = new HashMap<String, Object>();
+    Contact contact = Contact.find(Integer.parseInt(request.params(":id")));
+    ArrayList<Email> email = contact.getEmail();
+    model.put("contact", contact);
+    model.put("email", email);
+    model.put("template", "templates/contact-email-form.vtl");
+    return new ModelAndView(model, layout);
+  }, new VelocityTemplateEngine());
 
-  // post("/tasks", (request, response) -> {
-  //   HashMap<String, Object> model = new HashMap<String, Object>();
-  //   String description = request.queryParams("description");
-  //   Task newTask = new Task(description);
-  //   model.put("task", newTask);
-  //   model.put("template", "templates/success.vtl");
-  //   return new ModelAndView(model, layout);
-  // },  new VelocityTemplateEngine());
+  post("/email", (request, response) -> {
+    HashMap<String, Object> model = new HashMap<String, Object>();
+
+    Contact contact = Contact.find(Integer.parseInt(request.queryParams("contactId")));
+    //System.out.println("x");
+    ArrayList<Email> email = contact.getEmail();
+
+    if (email == null) {
+      email = new ArrayList<Email>();
+      request.session().attribute("email", email);
+    }
+
+    String emailType = request.queryParams("emailType");
+    String email = request.queryParams("email");
+
+    Email newEmail = new Email(emailType, email);
+
+    email.add(newEmail);
+
+    model.put("email", email);
+    model.put("contact", contact);
+    model.put("template", "templates/contact.vtl");
+    return new ModelAndView(model, layout);
+  }, new VelocityTemplateEngine());
+
+  get("contactList/:id/email/new", (request, response) -> {
+    HashMap<String, Object> model = new HashMap<String, Object>();
+    Contact contact = Contact.find(Integer.parseInt(request.params(":id")));
+    ArrayList<Email> email = contact.getEmail();
+    model.put("contact", contact);
+    model.put("email", email);
+    model.put("template", "templates/contact-email-form.vtl");
+    return new ModelAndView(model, layout);
+  }, new VelocityTemplateEngine());
+
+  post("/email", (request, response) -> {
+    HashMap<String, Object> model = new HashMap<String, Object>();
+
+    Contact contact = Contact.find(Integer.parseInt(request.queryParams("contactId")));
+    //System.out.println("x");
+    ArrayList<Email> email = contact.getEmail();
+
+    if (email == null) {
+      email = new ArrayList<Email>();
+      request.session().attribute("email", email);
+    }
+
+    String emailType = request.queryParams("emailType");
+    String email = request.queryParams("email");
+
+    Email newEmail = new Email(emailType, email);
+
+    email.add(newEmail);
+
+    model.put("email", email);
+    model.put("contact", contact);
+    model.put("template", "templates/contact.vtl");
+    return new ModelAndView(model, layout);
+  }, new VelocityTemplateEngine());
+  
  }
 }

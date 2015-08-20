@@ -1,0 +1,28 @@
+<h3>Here are all the detail in $contact.getFirstName() $contact.getLastName():</h3>
+
+#foreach($phone in $contact.getPhone())
+ <h4>Type: $phone.getPhoneType()</h4><br>
+ <h4>$phone.getAreaCode() - $phone.getNumber()</h4>
+#end
+
+#foreach($email in $contact.getEmail())
+ <h4>Type: $email.getEmailType()</h4><br>
+ <h4>$email.getEmail()</h4>
+#end
+
+#foreach($address in $contact.getAddress())
+ <h4>Type: $address.getAddressType()</h4><br>
+ <h4>$address.getStreet()</h4><br>
+ <h4>$address.getCity(), $address.getState(), $address.getZip()</h4>
+#end
+
+<br>
+<a href="/contactList/$contact.getId()/phone/new">Add a new phone</a>
+<br>
+<a href="/contactList/$contact.getId()/email/new">Add a new email</a>
+<br>
+<a href="/contactList/$contact.getId()/address/new">Add a new address</a>
+<br>
+<a href="/contactList/new">Add a new contact</a>
+<br>
+<a href="/">Return to Main Page</a>

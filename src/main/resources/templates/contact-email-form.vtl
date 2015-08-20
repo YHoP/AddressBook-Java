@@ -1,0 +1,15 @@
+<h3>Add an Email to $contact.getFirstName() $contact.getLastName()</h3>
+
+<form action="/email" method="post" class="form-inline">
+  <input id="contactId" name="contactId" type="hidden" value="$contact.getId()">
+
+  <div class="form-group">
+    <label for="emailType">Type</label>
+    <input id="emaiType" name="emaiType" type="text" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="email">Type</label>
+    <input id="email" name="email" type="email" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-success">Add Email</button>
+</form>
