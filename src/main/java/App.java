@@ -139,40 +139,46 @@ public class App {
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  get("contactList/:id/email/new", (request, response) -> {
+
+
+
+
+  get("contactList/:id/address/new", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
     Contact contact = Contact.find(Integer.parseInt(request.params(":id")));
-    ArrayList<Email> email = contact.getEmail();
+    ArrayList<Address> address = contact.getAddress();
     model.put("contact", contact);
-    model.put("email", email);
-    model.put("template", "templates/contact-email-form.vtl");
+    model.put("address", address);
+    model.put("template", "templates/contact-address-form.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
-  post("/email", (request, response) -> {
+  post("/address", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
 
     Contact contact = Contact.find(Integer.parseInt(request.queryParams("contactId")));
-    //System.out.println("x");
-    ArrayList<Email> email = contact.getEmail();
+    ArrayList<Address> address = contact.getAddress();
 
-    if (email == null) {
-      email = new ArrayList<Email>();
-      request.session().attribute("email", email);
+    if (address == null) {
+      address = new ArrayList<Address>();
+      request.session().attribute("address", address);
     }
 
-    String emailType = request.queryParams("emailType");
-    String email = request.queryParams("email");
+    String addressType = request.queryParams("addressType");
+    String street = request.queryParams("street");
+    String city = request.queryParams("city");
+    String state = request.queryParams("state");
+    String zip = request.queryParams("zip");
 
-    Email newEmail = new Email(emailType, email);
+    Address newAddress = new Address(emailType, street, city, state, zip);
 
-    email.add(newEmail);
+    address.add(newAddress);
 
-    model.put("email", email);
+    model.put("address", address);
     model.put("contact", contact);
     model.put("template", "templates/contact.vtl");
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
-  
+
  }
 }
